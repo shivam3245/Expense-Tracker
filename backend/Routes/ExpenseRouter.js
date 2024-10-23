@@ -6,6 +6,6 @@ router.get('/', fetchExpenses)
 
 router.post('/', addExpenses)
 
-router.delete('/:expenseID', deleteExpenses)
+router.delete('/:expenseId', deleteExpenses)
 
 module.exports=router;
