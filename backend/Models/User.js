@@ -14,7 +14,24 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    expenses: [
+        {
+            text: {
+                type: String,
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
+
 });
 
 const UserModel = mongoose.model('users', UserSchema);

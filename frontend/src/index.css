@@ -1,29 +1,28 @@
-
 *,
 ::before,
-::after{
+::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-label{
+label {
   font-size: 20px;
 }
 
 html,
-body{
+body {
   height: 100%;
   width: 100%;
 }
 
-body{
+body {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.container{
+.container {
   background-color: #FFF;
   padding: 32px 48px;
   border-radius: 10px;
@@ -32,21 +31,22 @@ body{
   box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 
-.container > h1{
+.container>h1 {
   margin-bottom: 20px;
 }
 
-.container > form{
+.container>form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.container div{
+
+.container div {
   display: flex;
   flex-direction: column;
 }
 
-.container input{
+.container input {
   width: 100%;
   font-size: 20px;
   padding: 10px;
@@ -55,12 +55,17 @@ body{
   border-bottom: 1px solid black;
 }
 
-.container input::placeholder{
+.container input::placeholder {
   font-size: 12px;
   font-style: italic;
 }
 
-button{
+.user-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
   background-color: purple;
   border: none;
   font-size: 20px;
@@ -69,4 +74,52 @@ button{
   padding: 10px;
   cursor: pointer;
   margin: 10px 0;
+}
+
+.expense-list {
+  font-family: Arial, sans-serif;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.expense-description {
+  font-weight: bold;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 4px 7px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.amounts-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+}
+
+.income-amount {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.expense-amount {
+  color: #c0392b;
+  font-weight: bold;
 }
