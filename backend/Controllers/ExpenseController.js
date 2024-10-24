@@ -28,6 +28,38 @@ const addExpenses= async(req,res)=>{
     }
 }
 
+const updateExpenses= async(req,res)=>{
+    const {amount, text}=req.body
+    const {_id}=req.user
+    const {expenseId} = req.params
+    try{
+        const userData=await UserModel.updateOne(
+            {_id, "expenses._id" : expenseId},
+            {
+                $set:{
+                    "expenses.$.text" : text,
+                    "expenses.$.amount" : amount,
+                    "expenses.$.updatedAt" : Date.now()
+                }   
+            }
+            // {new:true}
+        )
+        return res.status(200).json({
+            message:"Expense Updated Successfully",
+            success:true,
+            data:userData?.expenses
+        })
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({
+            message:"Something went Wrong",
+            error:err,
+            success:false
+        })
+    }
+}
+
 const fetchExpenses= async(req,res)=>{
     const body=req.body
     const {_id}=req.user
@@ -79,5 +111,6 @@ const deleteExpenses= async(req,res)=>{
 module.exports={
     addExpenses,
     fetchExpenses,
-    deleteExpenses
+    deleteExpenses,
+    updateExpenses
 }

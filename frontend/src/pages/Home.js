@@ -106,18 +106,41 @@ function Home() {
         }
     };
 
-    const handleEditExpense = (id, updatedExpense) => {
+    const handleEditExpense = async (id, updatedExpense) => {
+
         setExpenses((prevExpenses) =>
             prevExpenses.map((expense) =>
                 expense._id === id
                     ? { 
                         ...expense, 
                         text: updatedExpense.text, 
-                        amount: parseFloat(updatedExpense.amount) 
+                        amount: parseFloat(updatedExpense.amount)
                     }
                     : expense
             )
         );
+
+        try {
+            const url = `${APIUrl}/expenses/${id}`;
+            const headers = {
+                method: "PUT",
+                headers: {
+                    'Authorization': localStorage.getItem('token'),
+                    "Content-Type": 'application/json',
+                },
+                body: JSON.stringify(updatedExpense),
+            };
+            const response = await fetch(url, headers);
+            if (response.status === 403) {
+                navigate('/login');
+                return;
+            }
+            const result = await response.json();
+            setExpenses(result.data);
+            handleSuccess(result.message);
+        } catch (err) {
+            handleError(err);
+        }
     };
     
 

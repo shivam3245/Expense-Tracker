@@ -56,7 +56,7 @@ const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
                             </div>
                         
                             <div className="text-sm text-gray-500 text-right">
-                                {new Date(expense.createdAt).toLocaleString()}
+                                {new Date(expense.updatedAt).toLocaleString()}
                             </div>
                         </div>
                     ))
@@ -65,7 +65,6 @@ const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
                 )}
             </div>
 
-            {/*I amm creating modal window here*/}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-5 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-6 lg:max-w-lg">
