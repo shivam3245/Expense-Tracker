@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APIUrl, handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
@@ -35,7 +35,8 @@ function Home() {
         }, 1000);
     };
 
-    const fetchExpenses = async () => {
+
+    const fetchExpenses = useCallback(async () => {
         try {
             const url = `${APIUrl}/expenses`;
             const headers = {
@@ -57,11 +58,11 @@ function Home() {
         } catch (err) {
             handleError(err);
         }
-    };
+    }, [navigate]);
 
     useEffect(() => {
         fetchExpenses();
-    }, []);
+    }, [fetchExpenses]); 
 
     const addExpenses = async (data) => {
         try {
@@ -143,12 +144,6 @@ function Home() {
         }
     };
 
-    useEffect(() => {
-        console.log("Updated expenses:", expenses);
-    }, [expenses]);
-    
-    
-    
     return (
         <div className="flex flex-col p-6 max-w-4xl mx-auto">
             <div className="user-section flex justify-between items-center mb-4">
@@ -160,12 +155,12 @@ function Home() {
             <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
             <ExpenseForm addExpenses={addExpenses} />
             <div className="overflow-y-auto max-h-60">
-            <ExpenseTable 
-    expenses={expenses} 
-    handledeleteExpense={handledeleteExpense} 
-    handleEditExpense={handleEditExpense} 
-/>
-</div>
+                <ExpenseTable 
+                    expenses={expenses} 
+                    handledeleteExpense={handledeleteExpense} 
+                    handleEditExpense={handleEditExpense} 
+                />
+            </div>
             <ToastContainer />
         </div>
     );
