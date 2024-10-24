@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
-const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
+const ExpenseTable = ({ expenses = [], handledeleteExpense, handleEditExpense }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState(null);
     const [editedExpense, setEditedExpense] = useState({ text: '', amount: '' });
@@ -19,15 +19,20 @@ const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         handleEditExpense(selectedExpense._id, editedExpense);
-        closeModal();
+        closeModal(); 
     };
+
+    useEffect(() => {
+        console.log("ExpenseTable received new props:", expenses);
+    }, [expenses]);
+    
 
     return (
         <div>
             <div className="expense-list max-h-60 overflow-y-auto border border-gray-300 rounded-lg bg-white shadow-md">
-                {expenses?.length > 0 ? (
-                    expenses.map((expense, index) => (
-                        <div key={index} className="expense-item py-2 px-4 border-b border-gray-300">
+                {expenses.length > 0 ? (
+                    expenses.map((expense) => (
+                        <div key={expense._id} className="expense-item py-2 px-4 border-b border-gray-300">
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <button
@@ -46,7 +51,6 @@ const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
                                         {expense.text}
                                     </div>
                                 </div>
-     
                                 <div
                                     className="expense-amount text-sm md:text-lg font-bold"
                                     style={{ color: expense.amount > 0 ? '#00CC00' : '#c0392b' }}
@@ -54,7 +58,6 @@ const ExpenseTable = ({ expenses, handledeleteExpense, handleEditExpense }) => {
                                     ₹{expense.amount}
                                 </div>
                             </div>
-                        
                             <div className="text-sm text-gray-500 text-right">
                                 {new Date(expense.updatedAt).toLocaleString()}
                             </div>

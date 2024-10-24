@@ -49,11 +49,19 @@ function Home() {
                 return;
             }
             const result = await response.json();
-            setExpenses(result.data);
+            if (result.data) {
+                setExpenses(result.data);
+            } else {
+                setExpenses([]);
+            }
         } catch (err) {
             handleError(err);
         }
     };
+
+    useEffect(() => {
+        fetchExpenses();
+    }, []);
 
     const addExpenses = async (data) => {
         try {
@@ -79,10 +87,6 @@ function Home() {
         }
     };
 
-    useEffect(() => {
-        fetchExpenses();
-    }, []);
-
     const handledeleteExpense = async (expenseId) => {
         try {
             const url = `${APIUrl}/expenses/${expenseId}`;
@@ -107,19 +111,6 @@ function Home() {
     };
 
     const handleEditExpense = async (id, updatedExpense) => {
-
-        setExpenses((prevExpenses) =>
-            prevExpenses.map((expense) =>
-                expense._id === id
-                    ? { 
-                        ...expense, 
-                        text: updatedExpense.text, 
-                        amount: parseFloat(updatedExpense.amount)
-                    }
-                    : expense
-            )
-        );
-
         try {
             const url = `${APIUrl}/expenses/${id}`;
             const headers = {
@@ -136,14 +127,28 @@ function Home() {
                 return;
             }
             const result = await response.json();
-            setExpenses(result.data);
-            handleSuccess(result.message);
+            
+            if (result.data) {
+                setExpenses((prevExpenses) => 
+                    prevExpenses.map((expense) =>
+                        expense._id === id 
+                            ? { ...expense, text: updatedExpense.text, amount: parseFloat(updatedExpense.amount) } 
+                            : expense
+                    )
+                );
+                handleSuccess(result.message);
+            }
         } catch (err) {
             handleError(err);
         }
     };
-    
 
+    useEffect(() => {
+        console.log("Updated expenses:", expenses);
+    }, [expenses]);
+    
+    
+    
     return (
         <div className="flex flex-col p-6 max-w-4xl mx-auto">
             <div className="user-section flex justify-between items-center mb-4">
@@ -155,8 +160,12 @@ function Home() {
             <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
             <ExpenseForm addExpenses={addExpenses} />
             <div className="overflow-y-auto max-h-60">
-                <ExpenseTable expenses={expenses} handledeleteExpense={handledeleteExpense} handleEditExpense={handleEditExpense}/>
-            </div>
+            <ExpenseTable 
+    expenses={expenses} 
+    handledeleteExpense={handledeleteExpense} 
+    handleEditExpense={handleEditExpense} 
+/>
+</div>
             <ToastContainer />
         </div>
     );
