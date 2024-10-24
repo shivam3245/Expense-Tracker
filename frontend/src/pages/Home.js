@@ -106,18 +106,33 @@ function Home() {
         }
     };
 
+    const handleEditExpense = (id, updatedExpense) => {
+        setExpenses((prevExpenses) =>
+            prevExpenses.map((expense) =>
+                expense._id === id
+                    ? { 
+                        ...expense, 
+                        text: updatedExpense.text, 
+                        amount: parseFloat(updatedExpense.amount) 
+                    }
+                    : expense
+            )
+        );
+    };
+    
+
     return (
         <div className="flex flex-col p-6 max-w-4xl mx-auto">
             <div className="user-section flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Welcome {loggedInUser}</h1>
-                <button className="bg-purple-600 text-white text-lg rounded-md py-2 px-4" onClick={handleLogout}>
+                <h1 className="text-2xl font-bold">Welcome <span className='text-purple-700'>{loggedInUser}</span></h1>
+                <button className="bg-purple-600 text-white text-lg rounded-md py-1 px-2 md:py-2 md:px-4" onClick={handleLogout}>
                     Logout
                 </button>
             </div>
             <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
             <ExpenseForm addExpenses={addExpenses} />
             <div className="overflow-y-auto max-h-60">
-                <ExpenseTable expenses={expenses} handledeleteExpense={handledeleteExpense} />
+                <ExpenseTable expenses={expenses} handledeleteExpense={handledeleteExpense} handleEditExpense={handleEditExpense}/>
             </div>
             <ToastContainer />
         </div>
